@@ -186,7 +186,7 @@
     										<div class="input-group m-t-10">
     											<input type="text" id="example-input2-group2" name="example-input2-group2" class="form-control" placeholder="Código ou nome do evento">
     											<span class="input-group-append">
-    												<button type="button" class="btn btn-pesquisar"><i class="fa fa-search"></i></button>
+    												<button type="button" class="btn btn-pesquisar" data-tt="tooltip" title="Buscar registro"><i class="fa fa-search"></i></button>
     											</span>
     										</div>
 
@@ -207,7 +207,8 @@
     								<tr>
     									<th>Título </th>
     									<th>Tipo</th>
-    									<th>Data do Evento</th>
+    									<th>Inicio do Evento</th>
+    									<th>Fim do Evento</th>
     									<th>Vagas</th>
     									<th>Stand</th>
     									<th>Link Evento</th>
@@ -215,23 +216,29 @@
     									<th>Ação</th>
     								</tr>
     							</thead>
-    							
+
     							<tbody>
     								<tr th:each="evento: ${eventoDomainList}">
     									<td th:text="${evento.eventoTitulo}" />
     									<td th:text="${evento.eventoTipo?.eventoTipoDescricao}" />
-    									<td th:text="${#dates.format(evento.eventoDataHora, 'dd/MM/yyyy HH:mm')}" />
-    									<td th:text="${evento.eventoVagas}" />
+    									<td th:text="${#dates.format(evento.eventoDataInicio, 'dd/MM/yyyy HH:mm')}" />
+    									<td th:text="${#dates.format(evento.eventoDataFim, 'dd/MM/yyyy HH:mm')}" />
+    									<td>
+    										<button type="button" class="btn btn-acao-table" data-toggle="tooltip" data-placement="top" title="Ver lista de participantes">
+    											<i class="far fa-eye"></i>
+    										</button>
+    									</td>
     									<td></td>
     									<td><a th:href="@{http://{link}(link=${evento.eventoLink})}" target="_blank">Clique aqui</a></td>
     									<td><a th:href="@{http://{linkBanner}(linkBanner=${evento.eventoLinkBanner})}" target="_blank">Clique aqui</a></td>
     									<td>
     										<a th:href="@{/evento/atualizar/{id}(id=${evento.id})}">
-   												<button type="button" class="btn btn-acao-table"><i class="far fa-edit"></i></button>
+    											<button type="button" class="btn btn-acao-table"><i class="far fa-edit"></i></button>
+   												<!-- <button type="button" th:id="${evento.id}" class="btn btn-acao-table" data-toggle="modal" data-target="#modal-editar-registro" data-tt="tooltip" title="Atualizar registro"><i class="far fa-edit"></i></button> -->
 											</a>
-    										<a th:href="@{/evento/delete/{id}(id=${evento.id})}">
-    											<button type="button" class="btn btn-acao-table"><i class="fas fa-minus"></i></button>
-    										</a>
+    										<!--<a th:href="@{/evento/delete/{id}(id=${evento.id})}">
+    											<button type="button" class="btn btn-acao-table alert-excluir-registro"><i class="fas fa-minus"></i></button>
+    										</a>-->
     									</td>
     								</tr>
     							</tbody>
@@ -253,6 +260,131 @@
     </div>
 
 </div>
+
+<!--Início Modal Editar Registro-->
+<div id="modal-editar-registro" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-padrao">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">Atualizar registro</h4>
+			</div>
+			<div class="modal-body">
+
+				<form class="form-horizontal" role="form" th:object="${eventoDomain}" th:action="@{/evento/salvar}" method="POST">
+					<fieldset>
+						<legend>Informações sobre evento</legend>
+						<div class="form-row">
+							<div class="col-md-3 mb-3">
+								<label>Título:</label>
+								<input type="text" class="form-control" id="modalTitulo" placeholder="Digite o título do evento">
+							</div>
+	
+							<div class="col-md-3 mb-3">
+								<label>Tipo:</label>
+									<select th:field="*{eventoTipo}" class="form-control select2">
+										<option value="">Selecionar</option>
+										<option th:each="eventoTipoDomain: ${eventoTipoDomainList}" th:value="${eventoTipoDomain.id}" th:text="${eventoTipoDomain.eventoTipoDescricao}"/>
+									</select>
+							</div>
+	
+							<div class="col-md-6 mb-3">
+								<label>Data e Hora de Início e Fim:</label>
+								<div>
+									<div class="input-group">
+										<div class="input-group-append">
+											<span class="input-group-text"><i class="mdi mdi-calendar" style="margin-right: 5px;"></i> <span class="mdi mdi-clock"></span></span>
+										</div>
+										<input type="text" class="form-control input-daterange-timepicker" name="daterange" value="01/01/2020 1:30 PM - 01/30/2020 2:00 PM"/>
+	
+										<!--<input type="text" th:field="*{eventoDataInicio}" class="form-control" placeholder="dd/mm/aaaa" id="datepicker-autoclose" required> -->
+									</div><!-- input-group -->
+								</div>
+							</div>
+						</div>
+				  </fieldset>
+
+				  <fieldset>
+					  <legend>Stand e Vagas</legend>
+					<div class="form-row">
+					  <div class="col-md-7 mb-3">
+						<label>Stand:</label>
+						<select class="form-control select2">
+							<option>Pesquise pelo código ou nome</option>
+							<optgroup>
+								<option value="tipo1">001 - Stand 1</option>
+								<option value="tipo2">002 - Stand 2</option>
+							</optgroup>
+						</select>
+					  </div>
+
+					  <div class="col-md-5 mb-3">
+						<label>Quantidade de Vagas:</label>
+						<input type="number" th:field="*{eventoVagas}" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" placeholder="Digite a quantidade de vagas">
+					  </div>
+					</div>
+				</fieldset>
+
+				<fieldset>
+					<legend>Links</legend>
+					<div class="form-row">
+							<div class="col-md-7 mb-3">
+							<label>Link do Evento:</label>
+							<input type="text" th:field="*{eventoLink}" class="form-control" placeholder="Digite o link do evento - Ex.: https://www.link.com.br">
+							</div>
+
+							<div class="col-md-5 mb-3">
+							<label>Link do Banner:</label>
+							<input type="text" th:field="*{eventoLinkBanner}" class="form-control" placeholder="Digite o link do banner - Ex.: https://www.link.com.br">
+							</div>
+					</div>
+				</fieldset>
+
+
+				<fieldset>
+					<legend>Status</legend>
+					<div class="form-row">
+							<div class="col-md-12 mb-3">
+								<div>
+									<input type="checkbox" checked data-plugin="switchery" data-color="#08358e"/>
+								</div>
+							</div>
+					</div>
+				</fieldset>
+			  </form>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary btn-large" data-dismiss="modal"><i class="far fa-times-circle" style="padding-right: 5px;"></i> Fechar</button>
+				<button type="button" class="btn btn-primary btn-large alert-atualizar-registro" data-dismiss="modal"><i class="fas fa-check " style="padding-right: 5px;"></i> Salvar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="custom-width-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog" style="width:55%; !important">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="custom-width-modalLabel">Modal Heading</h4>
+			</div>
+			<div class="modal-body">
+				<h4>Text in a modal</h4>
+				<p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+				<hr>
+				<h4>Overflowing text to show scroll behavior</h4>
+				<p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary waves-effect waves-light">Save changes</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 <!-- END wrapper -->
 <script src="https://kit.fontawesome.com/2465da788d.js" crossorigin="anonymous"></script>
 
@@ -288,6 +420,13 @@
 <!-- App js -->
 <script src="/assets/js/jquery.core.js"></script>
 <script src="/assets/js/jquery.app.js"></script>
+
+
+ <script type="text/javascript">
+$(document).ready(function(){
+	$("[data-tt=tooltip]").tooltip();
+});
+</script>
 
 </body>
 </html>

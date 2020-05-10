@@ -34,9 +34,13 @@ public class EventoDomain implements Serializable {
     @Column(name = "evento_link_banner")
     private String eventoLinkBanner;
 
-    @DateTimeFormat(pattern = "MM/dd/yyyy")
-    @Column(name = "evento_data_hora")
-    private Date eventoDataHora;
+    @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm")
+    @Column(name = "evento_data_inicio")
+    private Date eventoDataInicio;
+    
+    @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm")
+    @Column(name = "evento_data_fim")
+    private Date eventoDataFim;
     
     @Column(name = "evento_vagas")
     private int eventoVagas;
@@ -76,12 +80,20 @@ public class EventoDomain implements Serializable {
 		this.eventoLink = eventoLink;
 	}
 
-	public Date getEventoDataHora() {
-		return eventoDataHora;
+	public Date getEventoDataInicio() {
+		return eventoDataInicio;
+	}
+	
+	public void setEventoDataInicio(Date eventoDataInicio) {
+		this.eventoDataInicio = eventoDataInicio;
+	}
+	
+	public Date getEventoDataFim() {
+		return eventoDataFim;
 	}
 
-	public void setEventoDataHora(Date eventoDataHora) {
-		this.eventoDataHora = eventoDataHora;
+	public void setEventoDataFim(Date eventoDataFim) {
+		this.eventoDataFim = eventoDataFim;
 	}
 
 	public String getEventoLinkBanner() {

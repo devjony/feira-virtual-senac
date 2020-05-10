@@ -58,7 +58,8 @@ public class EventoService {
     	EventoDomain oldEventoDomain = find(eventoDomain.getId());
     	oldEventoDomain.setEventoTitulo(eventoDomain.getEventoTitulo());
     	oldEventoDomain.setEventoTipo(eventoDomain.getEventoTipo());
-    	oldEventoDomain.setEventoDataHora(eventoDomain.getEventoDataHora());
+    	oldEventoDomain.setEventoDataInicio(eventoDomain.getEventoDataInicio());
+    	oldEventoDomain.setEventoDataFim(eventoDomain.getEventoDataFim());
     	oldEventoDomain.setEventoLink(eventoDomain.getEventoLink());
     	oldEventoDomain.setEventoLinkBanner(eventoDomain.getEventoLinkBanner());
     	oldEventoDomain.setEventoVagas(eventoDomain.getEventoVagas());

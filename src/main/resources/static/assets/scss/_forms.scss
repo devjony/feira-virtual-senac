@@ -4,6 +4,7 @@
 label {
   font-weight: 500;
   font-family: $font-secondary;
+  display: block;
 }
 
 textarea.form-control {
@@ -97,4 +98,31 @@ select[multiple] {
 .input-group-btn .btn {
   padding: 7.5px 12px;
   margin-bottom: 0;
+}
+
+fieldset {
+  border: 1px solid $gray-light;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+legend {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  padding: 0;
+  margin-bottom: .5rem;
+  font-size: 0.9rem !important;
+  color: $custom;
+  font-weight: 700;
+}
+
+.input-group-addon {
+  border-radius: 2px;
+  border: 0px solid #eeeeee;
+  font-weight: 700;
+  font-size: 1em;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
 }

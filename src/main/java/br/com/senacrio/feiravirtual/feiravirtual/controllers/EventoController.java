@@ -33,6 +33,7 @@ public class EventoController {
 
         ModelAndView mv = new ModelAndView("/evento/listar_evento");
         mv.addObject("eventoDomainList", eventoService.findAll());
+        mv.addObject("eventoDomain", new EventoDomain());
 
         logger.info("Returning view to the client");
         return mv;
