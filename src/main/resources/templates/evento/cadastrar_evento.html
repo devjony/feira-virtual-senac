@@ -324,8 +324,10 @@
 	            return false;
 			} else {
 				var dataEvento = $("#daterange").val()
-				$("#eventoDataInicio").val(dataEvento.substring(0,16))
-				$("#eventoDataFim").val(dataEvento.substring(22,38))
+				var data = dataEvento.split(" - ");
+				
+				$("#eventoDataInicio").val(data[0])
+				$("#eventoDataFim").val(data[1])
 				swal({
 					title: 'Tudo ok!',
 					text: 'Seu cadastro foi efetuado com sucesso!',

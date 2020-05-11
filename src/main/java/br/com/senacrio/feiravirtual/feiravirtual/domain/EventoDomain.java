@@ -5,8 +5,6 @@ import java.util.Date;
 
 import javax.persistence.*;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 @Entity
 @Table(name = "evento")
 public class EventoDomain implements Serializable {
@@ -34,11 +32,9 @@ public class EventoDomain implements Serializable {
     @Column(name = "evento_link_banner")
     private String eventoLinkBanner;
 
-    @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm")
     @Column(name = "evento_data_inicio")
     private Date eventoDataInicio;
     
-    @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm")
     @Column(name = "evento_data_fim")
     private Date eventoDataFim;
     

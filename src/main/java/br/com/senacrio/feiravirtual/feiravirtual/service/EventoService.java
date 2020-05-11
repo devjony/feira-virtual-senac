@@ -45,7 +45,7 @@ public class EventoService {
 
     public EventoDomain save(EventoDomain eventoDomain) {
         logger.info("Saving [EventoDomain] on Database");
-
+        
         EventoDomain eventoDomainFromDb = this.eventoRepository.save(eventoDomain);
 
         logger.info("Returning [EventoDomain] saved on Database");

@@ -171,106 +171,87 @@
     	<!-- Start content -->
     	<div class="content">
     		<div class="container-fluid">
-
     			<div class="row">
     				<div class="col-sm-12">
-    					<h4 class="m-b-20 header-title">Cadastrar Evento</h4>
+						<h4 class="m-b-20 header-title">Cadastrar Evento</h4>
+						
+						<form class="form-horizontal" id="formCadastro" role="form" th:object="${eventoDomain}" th:action="@{/evento/salvar}" method="POST">
+							<fieldset>
+								<legend>Informações sobre evento</legend>
+								<div class="form-row">
+								<div class="col-md-3 mb-3">
+									<label>Título: *</label>
+									<input type="text" class="form-control" th:field="*{eventoTitulo}" placeholder="Digite o título do evento">
+								</div>
 
-						<form class="form-horizontal" role="form" th:object="${eventoDomain}" th:action="@{/evento/salvar}" method="POST">
-    						<div class="row">
-	    						<div class="col-md-6">
-    								<div class="form-group">
-    									<label class="col-md-6 col-form-label">Título do Evento:</label>
-    									<div class="col-md-10">
-    										<input type="text" class="form-control" th:field="*{eventoTitulo}" placeholder="Digite o título do evento">
-    									</div>
-    								</div>
+								<div class="col-md-3 mb-3">
+									<label>Tipo: *</label>
+										<select th:field="*{eventoTipo}" class="form-control select2">
+											<option value="">Selecionar</option>
+											<option th:each="eventoTipoDomain: ${eventoTipoDomainList}" th:value="${eventoTipoDomain.id}" th:text="${eventoTipoDomain.eventoTipoDescricao}" />
+										</select>
+								</div>
 
-    								<div class="form-group">
-    									<label class="col-sm-6 col-form-label">Tipo do Evento</label>
-    									<div class="col-sm-10">
-    										<select th:field="*{eventoTipo}" class="form-control select2">
-    											<option value="">Selecionar</option>
-   												<option th:each="eventoTipoDomain: ${eventoTipoDomainList}" th:value="${eventoTipoDomain.id}" th:text="${eventoTipoDomain.eventoTipoDescricao}"/>
-    										</select>
-    									</div>
-    								</div>
+								<div class="col-md-6 mb-3">
+									<label>Data e Hora de Início e Fim: *</label>
+									<div>
+										<div class="input-group">
+											<div class="input-group-append">
+												<span class="input-group-text"><i class="mdi mdi-calendar" style="margin-right: 5px;"></i> <span class="mdi mdi-clock"></span></span>
+											</div>
+											<input type="text"
+												class="form-control input-daterange-timepicker"
+												name="daterange"
+												id="daterange"
+												value="" />
+											<input type="hidden" id="eventoDataInicio" th:field="*{eventoDataInicio}" />
+											<input type="hidden" id="eventoDataFim" th:field="*{eventoDataFim}" />
+										</div><!-- input-group -->
+									</div>
+								</div>
+								</div>
+						  </fieldset>
 
-    								<div class="form-group">
-    									<label class="col-sm-6 col-form-label">Data do Evento</label>
-    									<div class="col-sm-10">
-    										<div>
-    											<div class="input-group">
-    												<input type="text" th:field="*{eventoDataHora}" class="form-control" placeholder="dd/mm/aaaa" id="datepicker-autoclose" required>
-    												<div class="input-group-append">
-    													<span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
-    												</div>
-    											</div><!-- input-group -->
-    										</div>
-    									</div>
-    								</div>
+						  <fieldset>
+							  <legend>Stand e Vagas</legend>
+							<div class="form-row">
+							  <div class="col-md-7 mb-3">
+								<label>Stand:</label>
+								<select class="form-control select2">
+									<option>Pesquise pelo código ou nome</option>
+									<optgroup>
+										<option value="tipo1">001 - Stand 1</option>
+										<option value="tipo2">002 - Stand 2</option>
+									</optgroup>
+								</select>
+							  </div>
 
-    								<div class="form-group">
-    									<label class="col-md-6 col-form-label">Quantidade de Vagas:</label>
-    									<div class="col-md-10">
-    										<input type="number" th:field="*{eventoVagas}" min="1" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" placeholder="Digite a quantidade de vagas">
-    									</div>
-    								</div>
-	    						</div> <!-- end col -->
+							  <div class="col-md-5 mb-3">
+								<label>Quantidade de Vagas: *</label>
+								<input type="number" th:field="*{eventoVagas}" onkeyup="if(this.value<0){this.value= this.value * -1}" min="0" class="form-control" placeholder="Digite a quantidade de vagas">
+							  </div>
+							</div>
+						</fieldset>
 
-    							<div class="col-md-6">
+						<fieldset>
+							<legend>Links</legend>
+							<div class="form-row">
+									<div class="col-md-7 mb-3">
+										<label>Link do Evento:</label>
+										<input type="url" th:field="*{eventoLink}" class="form-control" placeholder="Digite o link do evento - Ex.: https://www.link.com.br">
+									</div>
+	
+									<div class="col-md-5 mb-3">
+										<label>Link do Banner:</label>
+										<input type=url th:field="*{eventoLinkBanner}" class="form-control" placeholder="Digite o link do banner - Ex.: https://www.link.com.br">
+									</div>
+							</div>
+						</fieldset>
 
-    								<div class="form-group">
-    									<label class="col-sm-6 col-form-label">Selecione o Stand</label>
-    									<div class="col-sm-10">
-    										<select class="form-control select2">
-    											<option>Pesquise pelo código ou nome</option>
-    											<optgroup>
-    												<option value="tipo1">001 - Stand 1</option>
-    												<option value="tipo2">002 - Stand 2</option>
-    											</optgroup>
-    										</select>
-    									</div>
-    								</div>
-
-
-    								<div class="form-group">
-    									<label class="col-md-6 col-form-label">Link do Evento:</label>
-    									<div class="col-md-10">
-    										<input type="text" th:field="*{eventoLink}" class="form-control" placeholder="Digite o link do evento">
-    									</div>
-    								</div>
-
-    								<div class="form-group">
-    									<label class="col-md-6 col-form-label">Link do Banner:</label>
-    									<div class="col-md-10">
-    										<input type="text" th:field="*{eventoLinkBanner}" class="form-control" placeholder="Digite o link do banner">
-    									</div>
-    								</div>
-
-    								<!-- <div class="form-group">
-    									<label class="col-sm-6 col-form-label">Status do Evento</label>
-    									<div class="col-sm-10">
-    										<select class="form-control select2">
-    											<option>Selecionar</option>
-    											<optgroup label="Status">
-    												<option value="aprovado">Aprovado</option>
-    												<option value="pendente">Pendente</option>
-    												<option value="em_revisao">Em revisão</option>
-    											</optgroup>
-    										</select>
-    									</div>
-    								</div> -->
-
-    								<div class="mt-5 form-group">
-    									<div class="col-sm-10">
-    										<button type="submit" class="btn btn-primary pull-right"> <!--id="sa-success"-->Cadastrar Evento</button>
-    									</div>
-    								</div>
-
-    							</div> <!-- end col -->
-	    					</div> <!-- end row -->
-						</form>
+							<div class="mt-5 form-group">
+								<button type="submit" class="btn btn-primary btn-large pull-right" id="btnSubmit"> <i class="fas fa-plus" style="padding-right: 5px;" aria-hidden="true"></i> Cadastrar</button>
+							</div>
+						  </form>
     					
     				</div> <!-- end col -->
     			</div> <!-- end row -->
@@ -323,6 +304,43 @@
 <!-- App js -->
 <script src="../../assets/js/jquery.core.js"></script>
 <script src="../../assets/js/jquery.app.js"></script>
+
+<script>
+	$(function(){	
+		$("#btnSubmit").click(function(event){
+			event.preventDefault();
+			
+			if(
+				$("#eventoVagas").val() <= 0 ||
+				$("#eventoTitulo").val() == "" ||
+				$("#eventoTitulo").val() == ""
+			){
+				swal({
+					title: 'Preencha os campos',
+					text: 'Por favor, preencha os campos obrigatórios marcados com (*)',
+					type: 'warning',
+					confirmButtonColor: '#08358e'
+	            })
+	            return false;
+			} else {
+				var dataEvento = $("#daterange").val()
+				$("#eventoDataInicio").val(dataEvento.substring(0,16))
+				$("#eventoDataFim").val(dataEvento.substring(22,38))
+				swal({
+					title: 'Tudo ok!',
+					text: 'Seu cadastro foi efetuado com sucesso!',
+					type: 'success',
+					confirmButtonColor: '#08358e',
+					onClose: submitCadastro
+	            })
+			}
+		})
+		
+		function submitCadastro() {
+			$("#formCadastro").submit()
+		}
+	})
+</script>
 
 </body>
 </html>

@@ -369,7 +369,11 @@
 <script>
 	$(function(){
 		var dataInicio = $("#eventoDataInicio").val()
+		dataInicio = new Date(dataInicio).toLocaleString("pt-BR")
+		
 		var dataFim = $("#eventoDataFim").val()
+		dataFim = new Date(dataFim).toLocaleString("pt-BR")
+		
 		var dataEvento = dataInicio + " - " + dataFim
 		
 		$("#daterange").val(dataEvento)
@@ -388,8 +392,14 @@
                 buttonsStyling: false
             }).then(function () {
             	dataEvento = $("#daterange").val()
-				$("#eventoDataInicio").val(dataEvento.substring(0,16))
-				$("#eventoDataFim").val(dataEvento.substring(22,38))
+            	
+            	var data = dataEvento.split(" - ");
+            	
+            	dataInicio = data[0].toLocaleString("pt-BR")
+            	dataFim = data[1].toLocaleString("pt-BR")
+            	
+				$("#eventoDataInicio").val(dataInicio)
+				$("#eventoDataFim").val(dataFim)
                 swal({
 					title: 'Atualizado!',
 					text: 'O registro solicitado foi atualizado com sucesso!',
